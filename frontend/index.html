@@ -5,62 +5,67 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Toast message -->
+  <div id="toast" class="toast hide"></div>
 
-<h2 style="align-items: center;">Decision Companion</h2>
-<form class="input-form" action="#" method="POST">
-  <div class="field">
-    <label for="options">Options</label>
-    <input type="text" id="options"  placeholder="(comma separated)">
+  <br>
+  <h2 style="align-items: center;">Decision Companion System</h2>
+  <div id="calculation">
+    <form id="imput-form" class="input-form" action="#" method="POST">
+      <div class="field">
+        <label for="options">Options</label>
+        <input type="text" id="options"  placeholder="Comma separated">
+      </div>
+      <div class="field">
+        <label for="criteria">Criteria</label>
+        <input type="text" id="criteria"  placeholder="Comma separated">
+      </div>
+      <div class="field">
+        <label for="weights">Weights</label>
+        <input type="text" id="weights"  placeholder="Comma separated">
+      </div>
+      <div class="field">
+        <label for="scores">Scores</label>
+        <input type="text" id="scores"  placeholder="Scores rows like: 7 6 | 5 9">
+      </div>
+    </form>
+
+
+    <button id="evaluateBtn">Evaluate</button>
   </div>
-  <div class="field">
-    <label for="criteria">Criteria</label>
-    <input type="text" id="criteria"  placeholder="(comma separated)">
+
+  <div id="result" style="display: none;">
+    <div>
+      <h3>Decision Result</h3>
+      <table border="1" class="result-table" id="resultTable">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Option</th>
+            <th>Total Score</th>
+            <th>Explanation</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div>
+      <h3>Score Matrix</h3>
+      <table border="1" class="result-table" id="matrixTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div id="summary">
+      <h3 id="summary-text"></h3>
+    </div>
+
+    <button id="reevaluate">Re-evaluate</button>
+    <button id="new-decision">New Decision</button>
   </div>
-  <div class="field">
-    <label for="weights">Weights</label>
-    <input type="text" id="weights"  placeholder="(comma separated)">
-  </div>
-  <div class="field">
-    <label for="scores">Scores</label>
-    <input type="text" id="scores"  placeholder="Scores rows like: 7 6 | 5 9">
-  </div>
-  <!-- <textarea id="options" placeholder="Options (comma separated)"></textarea><br><br>
-  <textarea id="criteria" placeholder="Criteria (comma separated)"></textarea><br><br>
-  <textarea id="weights" placeholder="Weights (comma separated)"></textarea><br><br>
-  <textarea id="scores" placeholder="Scores rows like: 7 6 | 5 9"></textarea><br><br> -->
-</form>
 
-
-<button onclick="evaluateDecision()">Evaluate</button>
-
-<div style="display: none;" id="result">
-  <h3>Decision Result</h3>
-  <table border="1" class="result-table" id="resultTable">
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Option</th>
-        <th>Total Score</th>
-        <th>Explanation</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-<div style="display: none;" id="summary">
-  <h3 id="summary-text"></h3>
-</div>
-
-<div style="display: none;" id="score-matrix">
-  <h3>Score Matrix</h3>
-  <table border="1" class="result-table" id="matrixTable">
-    <thead></thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-
-<script src="decision.js"></script>
+  <script src="decision.js"></script>
 </body>
 </html>
