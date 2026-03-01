@@ -1,0 +1,38 @@
+body {
+    background-color: #ebfbfb;
+    text-align: center;
+}
+
+.result-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.input-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.input-form label {
+    display: block;
+    font-weight: bold;
+    color: #666;
+}
+
+.input-form input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
