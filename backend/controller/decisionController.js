@@ -35,7 +35,7 @@ exports.evaluateDecision = (req, res) => {
   try {
     const { options, criteria, weights, scores } = req.body;
 
-    if ( !options.length || !criteria.length || !weights.length || !scores.length ) {
+    if ( !options || !criteria || !weights || !scores ) {
       return res.status(400).json({ 
         message: "Empty inputs are not allowed"
       });
@@ -50,6 +50,8 @@ exports.evaluateDecision = (req, res) => {
     });
 
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ 
+      message: err.message
+     });
   }
 };

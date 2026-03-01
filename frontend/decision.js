@@ -31,17 +31,45 @@ document.addEventListener('DOMContentLoaded', function() {
       !document.getElementById("scores").value.trim()
     ) {
       showToast("Please fill all fields before evaluating.");
+      console.log("Options less than two.");
       return;
     }
 
     const options = document.getElementById("options").value.split(",");
     const criteria = document.getElementById("criteria").value.split(",");
-    const weights = document.getElementById("weights").value.split(",").map(Number);
+    const weightsNum = document.getElementById("weights").value.split(",").map(w => w.trim()).filter(w => w !== "");
+
+    if (weightsNum.length !== criteria.length || weightsNum.some(w => isNaN(w))) {
+      showToast("Enter valid weights for all criteria.");
+      console.log("Empty fields are present.");
+      return;
+    }
+    const weights = weightsNum.map(Number);
 
     const scoreRows = document.getElementById("scores").value.split("|");
     const scores = scoreRows.map(r => r.trim().split(" ").map(Number));
 
     const body = { options, criteria, weights, scores };
+
+    if (options.length < 2) {
+      showToast("Please enter two or more options to compare.");
+      console.log("Options less than two.");
+      return;
+    }
+
+    if (options.length !== scores.length) {
+      showToast("Number of score rows must match number of options.");
+      console.log("Number of score rows do not match number of options.");
+      return;
+    }
+
+    for (let row of scores) {
+      if (row.length !== criteria.length) {
+        showToast("Each score row must match number of criteria.");
+        console.log("Number of score rows must match number of criterias.");
+        return;
+      }
+    }
 
     const res = await fetch("http://localhost:3000/decision/evaluate", {
       method: "POST",
@@ -55,9 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
     showResults(result);
     showMatrix(result, criteria);
 
-    // document.getElementById("result").style.display = "block";
-    // document.getElementById("summary").style.display = "block";
-    // document.getElementById("score-matrix").style.display = "block";
     document.getElementById("calculation").style.display = "none";
     document.getElementById("result").style.display = "block";
 
