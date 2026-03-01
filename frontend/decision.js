@@ -54,10 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     showSummary(result);
     showResults(result);
     showMatrix(result, criteria);
-
-    // document.getElementById("result").style.display = "block";
-    // document.getElementById("summary").style.display = "block";
-    // document.getElementById("score-matrix").style.display = "block";
+    
     document.getElementById("calculation").style.display = "none";
     document.getElementById("result").style.display = "block";
 
