@@ -1,3 +1,5 @@
+const logger = require("../utils/logger");
+
 function decisionEngine(options, criteria, weights, scores) {
   let results = [];
 
@@ -34,6 +36,7 @@ function decisionEngine(options, criteria, weights, scores) {
 exports.evaluateDecision = (req, res) => {
   try {
     const { options, criteria, weights, scores } = req.body;
+    logger.info("Decision request received", req.body);
 
     if ( !options || !criteria || !weights || !scores ) {
       return res.status(400).json({ 
@@ -43,6 +46,9 @@ exports.evaluateDecision = (req, res) => {
 
     const result = decisionEngine(options, criteria, weights, scores);
 
+    logger.info("Decision result:", result);
+    console.log("Decision result:", result);
+
     res.json({
       statusCode: "SC000",
       message: "Decision evaluated",
@@ -50,6 +56,8 @@ exports.evaluateDecision = (req, res) => {
     });
 
   } catch (err) {
+    logger.error("Decision error:", err);
+    console.error("Decision error:", err);
     res.status(500).json({ 
       message: err.message
      });

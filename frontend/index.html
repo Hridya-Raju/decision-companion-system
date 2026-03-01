@@ -2,11 +2,19 @@
 <html>
 <head>
   <title>Decision Companion</title>
+  <link rel="icon" type="image/png" href="./images/logo.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Toast message -->
   <div id="toast" class="toast hide"></div>
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <img src="images/veritas.png" alt="Veritas" class="nav-logo">
+      <span class="nav-title">veritas</span>
+    </div>
+  </nav>
 
   <br>
   <h2 style="align-items: center;">Decision Companion System</h2>
@@ -37,7 +45,7 @@
   <div id="result" style="display: none;">
     <div>
       <h3>Decision Result</h3>
-      <table border="1" class="result-table" id="resultTable">
+      <table class="result-table" id="resultTable">
         <thead>
           <tr>
             <th>Rank</th>
@@ -52,7 +60,7 @@
 
     <div>
       <h3>Score Matrix</h3>
-      <table border="1" class="result-table" id="matrixTable">
+      <table class="result-table" id="matrixTable">
         <thead></thead>
         <tbody></tbody>
       </table>
