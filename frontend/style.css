@@ -15,6 +15,13 @@ body {
   background-color: #71C9CE;
 }
 
+.result-table th,
+.result-table td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+}
+
 .input-form {
     max-width: 600px;
     margin: 20px auto;
@@ -52,7 +59,8 @@ button {
     font-weight: bold;
     font-size: 18px;
     max-width: 640px;
-    margin: 30px auto;
+    margin: 0px auto;
+    margin-top: 30px;
     padding: 10px;
     width: 100%;
     border-radius: 5px;
