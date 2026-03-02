@@ -112,16 +112,6 @@ This approach ensures transparency and consistency.
 
 ---
 
-## How to Run
-
-`npm install`  
-`node server.js`  
-
-Then open index.html in your browser.  
-Make sure the backend runs on http://localhost:3000.
-
----
-
 ## Example Use Cases
 
 - Choosing a laptop under budget
@@ -143,6 +133,7 @@ The system works for any decision with measurable criteria.
 - Import data from CSV
 - Better explanation engine
 - Mobile-friendly UI
+- Implement dark mode
 
 ---
 

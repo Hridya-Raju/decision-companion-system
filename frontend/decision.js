@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("calculation").style.display = "block";
     document.getElementById("resultSection").style.display = "none";
     document.getElementById("toggleResult").style.display = "none";
-    document.getElementById("imput-form").reset();
+    document.getElementById("input-form").reset();
   });
 
   document.getElementById("toggleResult").addEventListener("click", function () {
