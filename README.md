@@ -112,16 +112,6 @@ This approach ensures transparency and consistency.
 
 ---
 
-## How to Run
-
-`npm install`  
-`node server.js`  
-
-Then open index.html in your browser.  
-Make sure the backend runs on http://localhost:3000.
-
----
-
 ## Example Use Cases
 
 - Choosing a laptop under budget
