@@ -14,12 +14,26 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById("reevaluate").addEventListener("click", function () {
     document.getElementById("result").style.display = "none";
     document.getElementById("calculation").style.display = "block";
+    document.getElementById("resultSection").style.display = "none";
+    document.getElementById("toggleResult").style.display = "none";
   });
 
   document.getElementById("new-decision").addEventListener("click", function () {
     document.getElementById("result").style.display = "none";
     document.getElementById("calculation").style.display = "block";
+    document.getElementById("resultSection").style.display = "none";
+    document.getElementById("toggleResult").style.display = "none";
     document.getElementById("imput-form").reset();
+  });
+
+  document.getElementById("toggleResult").addEventListener("click", function () {
+    if (document.getElementById("resultSection").style.display === "none") {
+      document.getElementById("resultSection").style.display = "block";
+      document.getElementById("toggleResult").innerText = "Hide Decision Result ▲";
+    } else {
+      document.getElementById("resultSection").style.display = "none";
+      document.getElementById("toggleResult").innerText = "Show Decision Result ▼";
+    }
   });
 
   async function evaluateDecision() {
@@ -35,8 +49,18 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    const options = document.getElementById("options").value.split(",");
     const criteria = document.getElementById("criteria").value.split(",");
+    const criteriaType = document.getElementById("criteriaType").value.split(",").map(x => x.trim().toLowerCase());
+
+    const optionsName = document.getElementById("options").value.split(",").map(o => o.trim());
+
+    if (optionsName.some(o => o === "")) {
+      showToast("Enter valid options");
+      console.log("Empty fields or invalid options are present.");
+      return;
+    }
+    const options = optionsName;
+    
     const weightsNum = document.getElementById("weights").value.split(",").map(w => w.trim()).filter(w => w !== "");
 
     if (weightsNum.length !== criteria.length || weightsNum.some(w => isNaN(w))) {
@@ -46,10 +70,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     const weights = weightsNum.map(Number);
 
-    const scoreRows = document.getElementById("scores").value.split("|");
-    const scores = scoreRows.map(r => r.trim().split(" ").map(Number));
+    const valueRows = document.getElementById("scores").value.split("|");
+    const values = valueRows.map(r => r.trim().split(" ").map(Number));
 
-    const body = { options, criteria, weights, scores };
+    const body = { options, criteria, weights, values, criteriaType };
 
     if (options.length < 2) {
       showToast("Please enter two or more options to compare.");
@@ -57,13 +81,18 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    if (options.length !== scores.length) {
-      showToast("Number of score rows must match number of options.");
-      console.log("Number of score rows do not match number of options.");
+    if (options.length !== values.length) {
+      showToast("Number of values must match number of options.");
+      console.log("Number of values do not match number of options.");
       return;
     }
 
-    for (let row of scores) {
+    if (criteriaType.length !== criteria.length) {
+      showToast("Criteria type must match number of criteria.");
+      return;
+    }
+
+    for (let row of values) {
       if (row.length !== criteria.length) {
         showToast("Each score row must match number of criteria.");
         console.log("Number of score rows must match number of criterias.");
@@ -85,6 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById("calculation").style.display = "none";
     document.getElementById("result").style.display = "block";
+    document.getElementById("resultSection").style.display = "none";
+    document.getElementById("toggleResult").style.display = "block";
+    document.getElementById("toggleResult").innerText = "Show Decision Result ▼";
 
     console.log("Result is: ", result);
   }
@@ -99,10 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
       row.innerHTML = `
         <td>${index + 1}</td>
         <td>${item.option}</td>
-        <td>${item.totalScore}</td>
+        <td>${Number(item.totalScore).toFixed(4)}</td>
         <td>
           ${item.explanation.map(e =>
-            `${e.criterion}: ${e.value} × ${e.weight} = ${e.contribution}`
+            `${e.criterion}: ${Number(e.value).toFixed(4)} × ${e.weight} = ${e.contribution}`
           ).join("<br>")}
         </td>
       `;
@@ -111,26 +143,60 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // function showSummary(result) {
+  //   const best = result.data[0];
+  //   const reasons = best.explanation
+  //     .sort((a,b)=>b.contribution-a.contribution)
+  //     .slice(0,2)
+  //     .map(r => r.criterion)
+  //     .join(" and ");
+
+  //   document.getElementById("summary-text").innerText =
+  //     `${best.option} ranked first mainly due to ${reasons}.`;
+  // }
+
   function showSummary(result) {
     const best = result.data[0];
-    const reasons = best.explanation
-      .sort((a,b)=>b.contribution-a.contribution)
-      .slice(0,2)
+    const second = result.data[1];
+    let biggestDiff = "";
+    let max = 0;
+
+    if (!second) {
+      document.getElementById("summary-text").innerText =
+        `${best.option} is the only option provided.`;
+      return;
+    }
+
+    const topCriteria = best.explanation
+      .sort((a, b) => b.contribution - a.contribution)
+      .slice(0, 2)
       .map(r => r.criterion)
       .join(" and ");
 
+    best.breakdown.forEach((v, i) => {
+      const diff = Math.abs(v - second.breakdown[i]);
+      if (diff > max) {
+        max = diff;
+        biggestDiff = best.explanation[i].criterion;
+      }
+    });
+
     document.getElementById("summary-text").innerText =
-      `${best.option} ranked first mainly due to ${reasons}.`;
+      `${best.option} is ranked higher than ${second.option} mainly due to better ${topCriteria}. 
+      The biggest difference was in ${biggestDiff}, which outweighed other factors.`;
+  }
+
+  function getStars(score, maxScore) {
+    const stars = Math.round((score / maxScore) * 5);
+    return "⭐".repeat(stars);
   }
 
   function showMatrix(result, criteria) {
     const head = document.querySelector("#matrixTable thead");
     const body = document.querySelector("#matrixTable tbody");
+    const maxScore = Math.max(...result.data.map(x => x.totalScore));
 
-    head.innerHTML =
-      "<tr><th>Option</th>" +
-      criteria.map(c => `<th>${c}</th>`).join("") +
-      "<th>Total</th></tr>";
+    head.innerHTML = "<tr><th>Option</th>" + criteria.map(c => `<th>${c}</th>`).join("") + "<th>Total</th><th>Rating</th></tr>";
 
     body.innerHTML = "";
 
@@ -139,7 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
         "<tr>" +
         `<td>${item.option}</td>` +
         item.breakdown.map(s => `<td>${s}</td>`).join("") +
-        `<td>${item.totalScore}</td>` +
+        `<td>${Number(item.totalScore).toFixed(4)}</td>` +
+        `<td>${getStars(item.totalScore, maxScore)}</td>` +
         "</tr>";
     });
   }

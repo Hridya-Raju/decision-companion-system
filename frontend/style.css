@@ -3,12 +3,18 @@ body {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .result-table {
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    border: 1px solid #444;
 }
 
 .result-table thead {
@@ -17,7 +23,7 @@ body {
 
 .result-table th,
 .result-table td {
-    border: 1px solid #444;
+    border: 1px double #444;
     padding: 8px;
     text-align: center;
 }
@@ -25,7 +31,7 @@ body {
 .input-form {
     max-width: 600px;
     margin: 20px auto;
-    margin-top: 60px;
+    margin-top: 40px;
     padding: 20px;
     text-align: left;
     background-color: #ffffff;
@@ -49,21 +55,22 @@ input[type="text"] {
     padding: 10px;
     margin-top: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
     box-sizing: border-box;
 }
 
 button {
     background-color: #00ADB5;
+    border-width: 0px;
     color: #ECF2FB;
     font-weight: bold;
     font-size: 18px;
-    max-width: 640px;
-    margin: 0px auto;
+    max-width: 600px;
+    margin: 30px 10px;
     margin-top: 30px;
     padding: 10px;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 6px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
@@ -79,7 +86,15 @@ input::placeholder {
 }
 
 h2 {
-  font-size: 40px;
+  font-size: 45px;
+}
+
+p {
+  font-size: 12px;
+  font-weight: bold;
+  color: #828181;
+  margin-top: 5px;
+  margin-bottom: 0px;
 }
 
 .toast {
@@ -107,4 +122,30 @@ h2 {
     transform: translateX(-50%) translateY(-40px);
     transition: all 0.5s ease-in-out;
     pointer-events: none;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: #71C9CE;
+    padding: 5px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    height: auto;
+    width: 50px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+
+.nav-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #222831;
 }

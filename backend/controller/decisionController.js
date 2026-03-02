@@ -1,3 +1,5 @@
+const logger = require("../utils/logger");
+
 function decisionEngine(options, criteria, weights, scores) {
   let results = [];
 
@@ -12,16 +14,16 @@ function decisionEngine(options, criteria, weights, scores) {
 
       explanation.push({
         criterion: criteria[j],
-        value: value,
+        value: Number(value.toFixed(4)),
         weight: weight,
-        contribution: value * weight
+        contribution: Number((value * weight).toFixed(4))
       });
     }
 
     results.push({
       option: options[i],
-      totalScore: total,
-      breakdown: scores[i],
+      totalScore: Number(total.toFixed(4)),
+      breakdown: scores[i].map(x => Number(x.toFixed(4))),
       explanation
     });
   }
@@ -31,17 +33,47 @@ function decisionEngine(options, criteria, weights, scores) {
   return results;
 }
 
+function normalizeValues(values, criteriaType) {
+  const rows = values.length;
+  const cols = values[0].length;
+
+  let normalized = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+  for (let j = 0; j < cols; j++) {
+    let column = values.map(r => Number(r[j]));
+    const max = Math.max(...column);
+    const min = Math.min(...column);
+
+    for (let i = 0; i < rows; i++) {
+      if (max === min) {
+        normalized[i][j] = 1;
+      } else if (criteriaType[j] === "min") {
+        normalized[i][j] = min / column[i];   // smaller is better
+      } else {
+        normalized[i][j] = column[i] / max;   // bigger is better
+      }
+    }
+  }
+
+  return normalized;
+}
+
 exports.evaluateDecision = (req, res) => {
   try {
-    const { options, criteria, weights, scores } = req.body;
+    const { options, criteria, weights, values, criteriaType } = req.body;
+    logger.info("Decision request received", req.body);
 
-    if ( !options || !criteria || !weights || !scores ) {
+    if ( !options || !criteria || !weights || !values || !criteriaType ) {
       return res.status(400).json({ 
         message: "Empty inputs are not allowed"
       });
     }
 
-    const result = decisionEngine(options, criteria, weights, scores);
+    const normalized = normalizeValues(values, criteriaType);
+    const result = decisionEngine(options, criteria, weights, normalized);
+
+    logger.info("Decision result:", result);
+    console.log("Decision result:", result);
 
     res.json({
       statusCode: "SC000",
@@ -50,6 +82,8 @@ exports.evaluateDecision = (req, res) => {
     });
 
   } catch (err) {
+    logger.error("Decision error:", err);
+    console.error("Decision error:", err);
     res.status(500).json({ 
       message: err.message
      });
