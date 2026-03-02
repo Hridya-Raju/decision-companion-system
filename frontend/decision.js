@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    const res = await fetch("http://localhost:3000/decision/evaluate", {
+    const res = await fetch("http://decision-companion-system-6m9b.onrender.com/decision/evaluate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
