@@ -29,7 +29,7 @@
       </div>
       <div class="field">
         <label>Criteria Type</label>
-        <p>For each criterion, type "max" if higher is better, "min" if lower is better</p>
+        <!-- <h6>For each criterion, type "max" if higher is better, "min" if lower is better</h6> -->
         <input type="text" id="criteriaType" placeholder="Example: min,max,max">
       </div>
       <div class="field">
@@ -42,6 +42,49 @@
       </div>
     </form>
 
+    <div>
+      <a href="#" id="howBtn" style="font-size: 16px; text-decoration: underline; cursor: pointer;">
+        How does it work?
+      </a>
+
+      <div id="howOverlay" class="overlay" style="display: none;">
+        <div class="popup">
+          <div class="popup-content">
+            <span id="closeHow" class="closeBtn">✖</span>
+
+            <h3 style="text-align: center; text-decoration: underline;">How this Decision System Works</h3>
+
+            <b>1. Options</b><br>
+            <p>Enter the items that you want to compare. Separate them using commas.<br>
+            Example: Laptop A, Laptop B<br><br></p>
+
+            <b>2. Criteria</b><br>
+            <p>Enter the criterias based on which you compare your options.<br>
+            Example: Price, Battery, Memory<br><br></p>
+
+            <b>3. Criteria Type</b><br>
+            <p>Write <b>min</b> if smaller value is better, <b>max</b> if bigger value is better.<br>
+            Example: If the criterias are Price, Battery, Memory; as lower price is generally preferred<br>
+            while higher battery life and higher memory is preferred, the inputs will be like: <br>
+            min, max, max<br><br></p>
+
+            <b>4. Values</b><br>
+            <p>Give scores row-wise for each option.<br>
+            Example: The price of first item is 55000, battery life is 25 hours, memory is 8GB.<br>
+            The price of second item is 70000, battery life is 32 hours, memory is 16GB.<br>
+            Then input is given as:<br>
+            55000 25 8 | 70000 32 16<br><br></p>
+
+            <b>5. Weightage</b><br>
+            <p>It gives the importance of each criterion.<br>
+            Example: Importance of Price, Battery, Memory are given as (on a scale of 10)<br>
+            7, 5, 8<br><br></p>
+
+            <p>The system normalizes values, multiplies by weights, and ranks options based on total score.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <button id="evaluateBtn">Evaluate</button>
   </div>
