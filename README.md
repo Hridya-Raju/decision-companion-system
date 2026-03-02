@@ -133,6 +133,7 @@ The system works for any decision with measurable criteria.
 - Import data from CSV
 - Better explanation engine
 - Mobile-friendly UI
+- Implement dark mode
 
 ---
 
