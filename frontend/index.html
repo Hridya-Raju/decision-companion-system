@@ -16,7 +16,6 @@
     </div>
   </nav>
 
-  <br>
   <h2 style="align-items: center;">Decision Companion System</h2>
   <div id="calculation">
     <form id="imput-form" class="input-form" action="#" method="POST">
@@ -29,12 +28,17 @@
         <input type="text" id="criteria"  placeholder="Comma separated">
       </div>
       <div class="field">
-        <label for="weights">Weightage</label>
-        <input type="text" id="weights"  placeholder="Comma separated">
+        <label>Criteria Type</label>
+        <p>For each criterion, type "max" if higher is better, "min" if lower is better</p>
+        <input type="text" id="criteriaType" placeholder="Example: min,max,max">
       </div>
       <div class="field">
-        <label for="scores">Scores</label>
-        <input type="text" id="scores"  placeholder="Scores rows like: 7 6 | 5 9">
+        <label for="scores">Values</label>
+        <input type="text" id="scores" placeholder="Values like: 55000 8 | 70000 10">
+      </div>
+      <div class="field">
+        <label for="weights">Weightage</label>
+        <input type="text" id="weights"  placeholder="Comma separated">
       </div>
     </form>
 
@@ -42,9 +46,12 @@
     <button id="evaluateBtn">Evaluate</button>
   </div>
 
-  <div id="result" style="display: none;">
+  <h3 id="toggleResult" style="cursor: pointer; display: none;">
+    Show Decision Result ▼
+  </h3>
+
+  <div id="resultSection" style="display: none;">
     <div>
-      <h3>Decision Result</h3>
       <table class="result-table" id="resultTable">
         <thead>
           <tr>
@@ -57,7 +64,8 @@
         <tbody></tbody>
       </table>
     </div>
-
+  </div>
+  <div id="result" style="display: none;">
     <div>
       <h3>Score Matrix</h3>
       <table class="result-table" id="matrixTable">
