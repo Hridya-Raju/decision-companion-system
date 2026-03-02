@@ -36,6 +36,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  const overlay = document.getElementById("howOverlay");
+  const popup = document.querySelector(".popup");
+
+  overlay.addEventListener("click", function (event) {
+    if (!popup.contains(event.target)) {
+      overlay.style.display = "none";
+    }
+  });
+
+  document.getElementById("howBtn").addEventListener("click", () => {
+    document.getElementById("howOverlay").style.display = "flex";
+  });
+
+  document.getElementById("closeHow").addEventListener("click", () => {
+    document.getElementById("howOverlay").style.display = "none";
+  });
+  
+
   async function evaluateDecision() {
 
     if (
@@ -51,6 +69,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const criteria = document.getElementById("criteria").value.split(",");
     const criteriaType = document.getElementById("criteriaType").value.split(",").map(x => x.trim().toLowerCase());
+
+    if (
+      criteriaType.some(x => x === "") ||
+      !criteriaType.every(x => x === "min" || x === "max")
+    ) {
+      showToast("Criteria type must be only 'min' or 'max' without empty values.");
+      console.log("Criteria type is either not 'min' or 'max' or has empty values.");
+      return;
+    }
 
     const optionsName = document.getElementById("options").value.split(",").map(o => o.trim());
 
@@ -84,11 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (options.length !== values.length) {
       showToast("Number of values must match number of options.");
       console.log("Number of values do not match number of options.");
-      return;
-    }
-
-    if (criteriaType.length !== criteria.length) {
-      showToast("Criteria type must match number of criteria.");
       return;
     }
 
@@ -143,18 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // function showSummary(result) {
-  //   const best = result.data[0];
-  //   const reasons = best.explanation
-  //     .sort((a,b)=>b.contribution-a.contribution)
-  //     .slice(0,2)
-  //     .map(r => r.criterion)
-  //     .join(" and ");
-
-  //   document.getElementById("summary-text").innerText =
-  //     `${best.option} ranked first mainly due to ${reasons}.`;
-  // }
-
   function showSummary(result) {
     const best = result.data[0];
     const second = result.data[1];
@@ -201,11 +211,13 @@ document.addEventListener('DOMContentLoaded', function() {
     body.innerHTML = "";
 
     result.data.forEach(item => {
+      const percent = ((item.totalScore / maxScore) * 100).toFixed(2);
+
       body.innerHTML +=
         "<tr>" +
         `<td>${item.option}</td>` +
         item.breakdown.map(s => `<td>${s}</td>`).join("") +
-        `<td>${Number(item.totalScore).toFixed(4)}</td>` +
+        `<td>${percent}%</td>` +
         `<td>${getStars(item.totalScore, maxScore)}</td>` +
         "</tr>";
     });
