@@ -99,6 +99,37 @@ This approach ensures transparency and consistency.
 
 ---
 
+## System Design
+
+Architecture diagram and Decision Logic diagram have been provided to clearly explain system structure and logic.
+
+### 1. Architecture Diagram
+
+- User interacts with the Frontend Web UI.
+- The Frontend sends a POST request to the Backend API.
+- The Backend validates inputs and calls the Decision Engine.
+- The Decision Engine processes normalization and the weighted scoring.
+- Ranked results are returned as a JSON response and displayed in the UI.
+
+![Architecture Diagram](docs/architecture.png)
+
+---
+
+### 2. Decision Logic Diagram
+
+1. Accepts user inputs (options, criteria, weights, values).
+2. Validate inputs for correctness.
+3. Normalizes values based on criteria type (min/max).
+4. Apply weights to normalized values.
+5. Calculate total score for each option.
+6. Sort options in descending order of score.
+7. Generate explanation for ranking.
+8. Return the ranked result to frontend and provide a summary.
+
+![Decision Logic Diagram](docs/decision_logic.png)
+
+---
+
 ## Edge Cases Considered
 
 - Trailing commas in all input fields

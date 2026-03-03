@@ -48,9 +48,9 @@ function normalizeValues(values, criteriaType) {
       if (max === min) {
         normalized[i][j] = 1;
       } else if (criteriaType[j] === "min") {
-        normalized[i][j] = min / column[i];   // smaller is better
+        normalized[i][j] = min / column[i];
       } else {
-        normalized[i][j] = column[i] / max;   // bigger is better
+        normalized[i][j] = column[i] / max;
       }
     }
   }
